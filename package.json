@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Fred Shepherd - fmbshepherd@gmail.com",
   "license": "ISC",
   "dependencies": {
     "type-to-reducer": "^1.1.0"
