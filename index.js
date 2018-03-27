@@ -23,15 +23,11 @@ const asyncReducer = (customInitialState, customLocation) => {
         pending: true
       }),
     REJECTED: (state, action) => {
-      let data = action.payload
-      if (typeof action.payload === 'object') {
-        data = action.payload.message
-      }
       return customLocation(state, action, {
         ...initialState,
         ...customInitialState,
         error: true,
-        data
+        data: action.payload
       })
     },
     FULFILLED: (state, action) =>
@@ -44,7 +40,7 @@ const asyncReducer = (customInitialState, customLocation) => {
   }
 }
 
-export const fullReducer = (type, customInitialState, customLocation) => {
+export const freducer = (type, customInitialState, customLocation) => {
   if (!customInitialState) {
     customInitialState = initialState
   }
