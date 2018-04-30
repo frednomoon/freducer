@@ -1,11 +1,12 @@
 {
   "name": "freducer",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Flexbile code for asyncronous reducer functions",
   "main": "./dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel src --presets babel-preset-es2015 --plugins transform-object-rest-spread --out-dir dist"
+    "build": "babel src --presets babel-preset-es2015 --plugins transform-object-rest-spread --out-dir dist",
+    "prepublish": "yarn build"
   },
   "author": "Fred Shepherd - fmbshepherd@gmail.com",
   "license": "ISC",
