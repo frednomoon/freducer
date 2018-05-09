@@ -3,10 +3,11 @@ import typeToReducer from 'type-to-reducer'
 const initialState = {
   success: false,
   pending: false,
-  error: false
+  error: false,
+  data: {}
 }
 
-const asyncReducer = (customInitialState, customLocation) => {
+export const asyncProperty = (customInitialState, customLocation) => {
   if (!customInitialState) {
     customInitialState = {}
   }
@@ -40,16 +41,24 @@ const asyncReducer = (customInitialState, customLocation) => {
   }
 }
 
-export const freducer = (type, customInitialState, customLocation) => {
+export const reducer = (args, customInitialState) => {
   if (!customInitialState) {
-    customInitialState = initialState
+    customInitialState = {}
+  }
+  return typeToReducer(args, {
+    ...initialState,
+    ...customInitialState
+  })
+}
+
+export default (type, customInitialState, customLocation) => {
+  if (!customInitialState) {
+    customInitialState = {}
   }
   return typeToReducer(
     {
-      [type]: asyncReducer(customInitialState, customLocation)
+      [type]: asyncProperty(customInitialState, customLocation)
     },
     { data: {}, ...initialState, ...customInitialState }
   )
 }
-
-export default asyncReducer
