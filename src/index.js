@@ -7,7 +7,7 @@ const initialState = {
   data: {}
 }
 
-export const asyncProperty = (customInitialState, customLocation) => {
+export const asyncMethod = (customInitialState, customLocation) => {
   if (!customInitialState) {
     customInitialState = {}
   }
@@ -41,23 +41,15 @@ export const asyncProperty = (customInitialState, customLocation) => {
   }
 }
 
-export const reducer = (args, customInitialState) => {
-  if (!customInitialState) {
-    customInitialState = {}
-  }
-  return typeToReducer(args, {
-    ...initialState,
-    ...customInitialState
-  })
-}
+export const reducer = typeToReducer
 
 export default (type, customInitialState, customLocation) => {
   if (!customInitialState) {
     customInitialState = {}
   }
-  return typeToReducer(
+  return reducer(
     {
-      [type]: asyncProperty(customInitialState, customLocation)
+      [type]: asyncMethod(customInitialState, customLocation)
     },
     { data: {}, ...initialState, ...customInitialState }
   )
