@@ -6,7 +6,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel src --presets babel-preset-es2015 --plugins transform-object-rest-spread --out-dir dist",
+    "build": "babel src --presets babel-preset-es2015 --plugins transform-object-rest-spread --out-dir dist && cp -f src/index.d.ts dist/index.d.ts",
     "prepublish": "yarn build"
   },
   "author": "Fred Shepherd - fmbshepherd@gmail.com",
