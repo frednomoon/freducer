@@ -70,12 +70,14 @@ export function asyncMethod(options: MethodOptions | undefined = {}): reducerMap
   return {
     PENDING: (state, action) => {
       return locationFunction(state, action, {
+        ...state,
         ...defaultInitialState(options),
         pending: true
       })
     },
     REJECTED: (state, action) => {
       return locationFunction(state, action, {
+        ...state,
         ...defaultInitialState(options),
         error: true,
         data: action.payload
@@ -83,6 +85,7 @@ export function asyncMethod(options: MethodOptions | undefined = {}): reducerMap
     },
     FULFILLED: (state, action) => {
       return locationFunction(state, action, {
+        ...state,
         ...defaultInitialState(options),
         success: true,
         data: action.payload
