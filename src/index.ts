@@ -1,6 +1,5 @@
 import * as typeToReducer from 'type-to-reducer'
 
-
 interface IState {
   success: boolean
   pending: boolean
@@ -32,7 +31,7 @@ interface MethodOptions {
   resetData?: boolean;
 }
 
-function defaultInitialState({ resetData, initialState = {} }: MethodOptions): IState {
+function defaultInitialState({ resetData = true, initialState = {} }: MethodOptions): IState {
   const state = {
     success: false,
     pending: false,
