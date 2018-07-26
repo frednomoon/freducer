@@ -50,7 +50,7 @@ function defaultInitialState({ resetData = true, initialState = {} }: MethodOpti
   }
 }
 
-export const asyncMethod = (options: MethodOptions) => {
+export const asyncMethod = (options: MethodOptions | undefined = {}) => {
   const { locationFunction = defaultLocationFunction } = options
   return {
     PENDING: (state, action) => {
@@ -78,7 +78,7 @@ export const asyncMethod = (options: MethodOptions) => {
 
 export const reducer = typeToReducer.default
 
-export default (type: string, options: MethodOptions) => {
+export default (type: string, options: MethodOptions | undefined = {}) => {
   const { initialState = {}, locationFunction = defaultLocationFunction } = options
   return reducer(
     {
