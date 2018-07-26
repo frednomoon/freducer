@@ -1,12 +1,11 @@
 {
   "name": "freducer",
-  "version": "2.0.0-rc1",
+  "version": "2.0.1-rc1",
   "description": "Flexbile code for asyncronous reducer functions",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel src --presets babel-preset-es2015 --plugins transform-object-rest-spread --out-dir dist && cp -f src/index.d.ts dist/index.d.ts",
+    "build": "tsc src/index.ts --outDir dist -d true",
     "prepublish": "yarn build"
   },
   "author": "Fred Shepherd - fmbshepherd@gmail.com",
@@ -15,8 +14,6 @@
     "type-to-reducer": "^1.1.0"
   },
   "devDependencies": {
-    "babel-cli": "6",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-es2015": "6"
+    "typescript": "^2.9.2"
   }
 }
