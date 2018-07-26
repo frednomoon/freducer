@@ -1255,6 +1255,10 @@ type-to-reducer@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/type-to-reducer/-/type-to-reducer-1.1.0.tgz#070f122ff1fe0c96c9787237b64be32777a7d71d"
 
+typescript@^2.9.2:
+  version "2.9.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.9.2.tgz#1cbf61d05d6b96269244eb6a3bce4bd914e0f00c"
+
 user-home@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/user-home/-/user-home-1.1.1.tgz#2b5be23a32b63a7c9deb8d0f28d485724a3df190"
