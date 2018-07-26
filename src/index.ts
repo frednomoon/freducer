@@ -95,7 +95,9 @@ export function asyncMethod(options: MethodOptions | undefined = {}): reducerMap
  * Produces the same functionality as the original type-to-reducer function (https://github.com/tomatau/type-to-reducer),
  * with the added feature of defaulting the initialState if one is not provided.
  */
-export const asyncReducer = (reducerMap: reducerMap, initialState: object | undefined) => typeToReducer.default(reducerMap, defaultInitialState({ initialState }))
+export function asyncReducer(reducerMap: reducerMap, initialState: object | undefined): reducerMapFunction {
+  return typeToReducer.default(reducerMap, defaultInitialState({ initialState }))
+}
 
 /**
  * Returns the original type-to-reducer function
@@ -105,9 +107,9 @@ export const reducer = typeToReducer.default
 /**
  * Returns a fully implemented, 1-line reducer function
  */
-export default (type: string, options: MethodOptions | undefined = {}) => {
+export default function (type: string, options: MethodOptions | undefined = {}): reducerMapFunction {
   const { initialState = {}, locationFunction = defaultLocationFunction } = options
-  return asyncReducer({
+  return reducer({
     [type]: asyncMethod({ initialState, locationFunction })
   }, defaultInitialState(options))
 }
