@@ -2,11 +2,15 @@
   "name": "freducer",
   "version": "3.0.0-rc2",
   "description": "Flexbile code for asyncronous reducer functions",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
     "build": "tsc src/index.ts --outDir dist -d true",
     "prepublish": "yarn build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frednomoon/freducer.git"
   },
   "author": "Fred Shepherd - fmbshepherd@gmail.com",
   "license": "ISC",
