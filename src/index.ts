@@ -26,7 +26,7 @@ interface MethodOptions {
   locationFunction?: LocationFunction;
   /**
    * Do you want the data object in your reducer to be cleared on _PENDING?
-   * @default true
+   * @default false
    */
   resetData?: boolean;
 }
@@ -37,7 +37,7 @@ interface MethodOptions {
  * various options
  */
 function defaultInitialState(options: MethodOptions | undefined = {}): IState {
-  const { resetData = true, initialState = {} } = options
+  const { resetData = false, initialState = {} } = options
 
   const state: IState = {
     success: false,
