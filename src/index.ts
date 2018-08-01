@@ -1,9 +1,19 @@
 import * as typeToReducer from 'type-to-reducer'
 
-interface IState {
-  success: boolean
-  pending: boolean
-  error: boolean
+type IState = {
+  success: true
+  pending: false
+  error: null
+  data?: any
+} | {
+  success: false
+  pending: true
+  error: null
+  data?: any
+} | {
+  success: false
+  pending: false
+  error: any
   data?: any
 }
 
@@ -49,7 +59,7 @@ function defaultInitialState(options: MethodOptions | undefined = {}): IState {
   const state: IState = {
     success: false,
     pending: false,
-    error: false
+    error: null
   }
   if (resetData) {
     state.data = {}
@@ -86,8 +96,7 @@ export function asyncMethod(options: MethodOptions | undefined = {}): reducerMap
       return locationFunction(state, action, {
         ...state,
         ...defaultInitialState(options),
-        error: true,
-        data: action.payload
+        error: action.payload
       })
     },
     FULFILLED: (state, action) => {

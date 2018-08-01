@@ -9,8 +9,8 @@
 
     const initialState = {
       pending: false,
-      error: false,
       success: false,
+      error: null,
       data: {}
     }
     
@@ -22,12 +22,11 @@
         }
         REJECTED: {
           ...initialState,
-          error: true
-          data: payload
+          error: payload
         }
         FULFILLED: {
           ...initialState,
-          success: true
+          success: true,
           data: payload
         }
       }
@@ -38,12 +37,11 @@
         }
         REJECTED: {
           ...initialState,
-          error: true
-          data: payload
+          error: payload
         }
         FULFILLED: {
           ...initialState,
-          success: true
+          success: true,
           data: payload
         }
       }
@@ -110,15 +108,14 @@ Secondly we are able to tell our reducer to write to nested objects using a
           ...state,
           [meta.id]: {
             ...initialState,
-            error: true
-            data: payload
+            error: payload
           }
         }
         FULFILLED: {
           ...state,
           [meta.id]: {
             ...initialState,
-            success: true
+            success: true,
             data: payload
           }
         }

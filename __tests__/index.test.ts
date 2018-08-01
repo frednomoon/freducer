@@ -4,7 +4,7 @@ const GET_RESOURCE = 'GET_RESOURCE'
 
 const store = {
   pending: false,
-  error: false,
+  error: null,
   success: false,
   data: null
 }
@@ -47,11 +47,10 @@ function basicImplementation(reducer, title) {
       const state = reducer(store, action)
 
       // error should be set to true
-      expect(state.error).toBe(true)
-      // data should equal payload
-      expect(state.data).toEqual(payload)
+      expect(state.error).toBe(payload)
 
       // trivial
+      expect(state.data).toEqual(store.data)
       expect(state.pending).toBe(store.pending)
       expect(state.success).toBe(store.success)
     })
