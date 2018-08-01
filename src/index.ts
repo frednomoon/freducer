@@ -4,10 +4,17 @@ interface IState {
   success: boolean
   pending: boolean
   error: boolean
-  data?: object
+  data?: any
 }
 
-type LocationFunction = (state: IState, action: object, internal: IState) => any
+interface FluxStandardAction {
+  type: string
+  meta?: any
+  payload?: any
+  error?: true
+}
+
+export type LocationFunction = (state: any, action: FluxStandardAction, internal: IState) => any
 
 const defaultLocationFunction: LocationFunction = (state, action, internal) => {
   return internal
