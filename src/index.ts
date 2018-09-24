@@ -37,7 +37,7 @@ interface MethodOptions {
    */
   initialState?: object;
   /**
-   * Would you like to pass a different initial state object?
+   * Would you like to pass a different location function?
    * @default defaultLocationFunction
    */
   locationFunction?: LocationFunction;
