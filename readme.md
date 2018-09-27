@@ -1,9 +1,50 @@
 # freducer
-  This package contains an implementation of tomatau's [type-to-reducer](https://github.com/tomatau/type-to-reducer) package, combined with pburtchaell's [redux-promise-middleware](https://github.com/pburtchaell/redux-promise-middleware). If you have absolutely no idea what [type-to-reducer](https://github.com/tomatau/type-to-reducer) does, you may want to learn that first - although hopefully this package's API is simple enough will be able to bypass that altogether in many scenarios. However, you will definitely need to understand the use the [redux-promise-middleware](https://github.com/pburtchaell/redux-promise-middleware).
+  This package contains an implementation of tomatau's [type-to-reducer](https://github.com/tomatau/type-to-reducer) package, for use with pburtchaell's [redux-promise-middleware](https://github.com/pburtchaell/redux-promise-middleware). If you have absolutely no idea what [type-to-reducer](https://github.com/tomatau/type-to-reducer) does, I really recommend taking a look at that as well - although hopefully this package's API is simple enough will be able to bypass that altogether in many scenarios. However, you will definitely need to understand the use the [redux-promise-middleware](https://github.com/pburtchaell/redux-promise-middleware).
 
 ## Basic usage
 
-  Usually with `typeToReducer` we would write something like:
+  Take the following reducer, written with standard Redux syntax:
+
+    const myReducer = (state, action) => {
+      switch (action.type) {
+        case 'GET_RESOURCE_PENDING':
+          return {
+            ...state,
+            pending: true
+          }
+        case 'GET_RESOURCE_FULFILLED':
+          return {
+            ...state,
+            success: true,
+            data: action.payload
+          }
+        case 'GET_RESOURCE_REJECTED':
+          return {
+            ...state,
+            error: action.payload
+          }
+        case 'UPDATE_RESOURCE_PENDING':
+          return {
+            ...state,
+            pending: true
+          }
+        case 'UPDATE_RESOURCE_FULFILLED':
+          return {
+            ...state,
+            success: true,
+            data: action.payload
+          }
+        case 'UPDATE_RESOURCE_REJECTED':
+          return {
+            ...state,
+            error: action.payload
+          }
+        default:
+          return state
+      }
+    }
+
+  Pretty long and messy right? Using a package like  `typeToReducer` we can improve the code a bit by writing something like this:
 
     import typeToReducer from 'type-to-reducer'
 
@@ -47,7 +88,7 @@
       }
     }, { initialState })
 
-  However now we can simplify this to:
+  A bit better right? But still *a lot* of repeated code... Imagine if you could simplify this to:
 
     import { asyncReducer, asyncMethod } from 'freducer'
 
@@ -56,7 +97,7 @@
       [UPDATE_RESOURCE]: asyncMethod()
     })
 
-  (Note that we also no longer have to define `initialState`)
+  Well now you can (note that we also no longer have to define `initialState`)!
 
 ## Default export
 
