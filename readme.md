@@ -124,11 +124,11 @@ If we only require a basic async reducer, we can leave both arguments blank
 as in the example above. However 2 options are available to customise the reducer.
 The most common will be `initialState` as we will quite often want to set a different default value for the `data` field. This is no problem - simply pass an object containing whatever fields you want to overwrite:
 
-    const customInitialState = { data: [] }
+    const initialState = { data: [] }
 
     const reducer = asyncReducer({
-      [GET_RESOURCE]: asyncMethod({ initialState: customInitialState })
-    }, customInitialState)
+      [GET_RESOURCE]: asyncMethod({ initialState })
+    }, initialState)
 
 Note that whatever you object you pass here will be merged (using spread operator) with the default object. 
 
