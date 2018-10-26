@@ -184,9 +184,3 @@ The arguments `state` & `internal` are less confusing than they seem.
 `state` tree begins. So this function simply describes the steps to get from `state`
 i.e. the root of this reducers section of the store, to wherever you want to place the
 'internals'.
-
-### resetData
-
-A common variation between asyncronous reducer functions is the behaviour of the `_PENDING` action, and its interaction with the `data` field. The default behaviour is for the `data` field to be ignored when a `_PENDING` action is fired. However, in some situations we may want to reset it to an empty object, `{}`, in preparation for the following `_SUCCESS` or `_ERROR` action
-
-We can now achieve this by setting `resetData: true` in either the `asyncMethod` function or `fullReducer`.

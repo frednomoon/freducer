@@ -44,11 +44,6 @@ interface MethodOptions {
    * @default defaultLocationFunction
    */
   locationFunction?: LocationFunction;
-  /**
-   * Do you want the data object in your reducer to be cleared on _PENDING?
-   * @default false
-   */
-  resetData?: boolean;
 }
 
 /**
@@ -57,15 +52,12 @@ interface MethodOptions {
  * various options
  */
 function defaultInitialState(options: MethodOptions | undefined = {}): IState {
-  const { resetData = false, initialState = {} } = options
+  const { initialState = {} } = options
 
   const state: IState = {
     success: false,
     pending: false,
     error: null
-  }
-  if (resetData) {
-    state.data = {}
   }
   return {
     ...state,
@@ -91,7 +83,6 @@ export function asyncMethod(options: MethodOptions | undefined = {}): reducerMap
     PENDING: (state, action) => {
       return locationFunction(state, action, {
         ...state,
-        ...defaultInitialState(options),
         pending: true
       })
     },
