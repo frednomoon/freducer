@@ -1,16 +1,19 @@
 import * as typeToReducer from 'type-to-reducer'
 
 type IState = {
+  // Success state
   success: true
   pending: false
   error: null
   data?: any
 } | {
-  success: false
+  // Pending state
+  success: true | false | null // success persisting from previous state
   pending: true
-  error: null
-  data?: any
+  error: any // also persists
+  data?: any // also persists
 } | {
+  // Error state
   success: false
   pending: false
   error: any
