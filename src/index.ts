@@ -7,17 +7,17 @@ type IState = {
   error: null
   data?: any
 } | {
+  // Error state
+  success: false
+  pending: false
+  error: any
+  data?: any // data persists
+} | {
   // Pending state
   success: true | false | null // success persisting from previous state
   pending: true
   error: any // also persists
   data?: any // also persists
-} | {
-  // Error state
-  success: false
-  pending: false
-  error: any
-  data?: any
 }
 
 interface FluxStandardAction {
