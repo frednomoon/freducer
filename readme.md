@@ -1,20 +1,61 @@
 # freducer
-  The module's default export, `asyncReducer`, returns an object detailing how the
-asyncronous aspects of a given action should operate. The object is should be
-of the particular form needed for use within the `typeToReducer` package. If you have absolutely no idea what `typeToReducer` does, you may want to learn that first - although hopefully this will be able to bypass that altogether in many scenarios.
+  This package contains an implementation of tomatau's [type-to-reducer](https://github.com/tomatau/type-to-reducer) package, for use with pburtchaell's [redux-promise-middleware](https://github.com/pburtchaell/redux-promise-middleware). If you have absolutely no idea what [type-to-reducer](https://github.com/tomatau/type-to-reducer) does, I really recommend taking a look at that as well - although hopefully this package's API is simple enough will be able to bypass that altogether in many scenarios. However, you will definitely need to understand the use the [redux-promise-middleware](https://github.com/pburtchaell/redux-promise-middleware).
 
 ## Basic usage
 
-  Usually with `typeToReducer` we would write something like:
+  Take the following reducer, written with standard Redux syntax:
+
+    const myReducer = (state, action) => {
+      switch (action.type) {
+        case 'GET_RESOURCE_PENDING':
+          return {
+            ...state,
+            pending: true
+          }
+        case 'GET_RESOURCE_FULFILLED':
+          return {
+            ...state,
+            success: true,
+            data: action.payload
+          }
+        case 'GET_RESOURCE_REJECTED':
+          return {
+            ...state,
+            error: action.payload
+          }
+        case 'UPDATE_RESOURCE_PENDING':
+          return {
+            ...state,
+            pending: true
+          }
+        case 'UPDATE_RESOURCE_FULFILLED':
+          return {
+            ...state,
+            success: true,
+            data: action.payload
+          }
+        case 'UPDATE_RESOURCE_REJECTED':
+          return {
+            ...state,
+            error: action.payload
+          }
+        default:
+          return state
+      }
+    }
+
+  Pretty long and messy right? Using a package like  `typeToReducer` we can improve the code a bit by writing something like this:
+
+    import typeToReducer from 'type-to-reducer'
 
     const initialState = {
       pending: false,
-      error: false,
       success: false,
+      error: null,
       data: {}
     }
     
-    const reducer = typeToReducer({
+    const myReducer = typeToReducer({
       [GET_RESOURCE]: {
         PENDING: {
           ...initialState,
@@ -22,12 +63,11 @@ of the particular form needed for use within the `typeToReducer` package. If you
         }
         REJECTED: {
           ...initialState,
-          error: true
-          data: payload
+          error: payload
         }
         FULFILLED: {
           ...initialState,
-          success: true
+          success: true,
           data: payload
         }
       }
@@ -38,44 +78,65 @@ of the particular form needed for use within the `typeToReducer` package. If you
         }
         REJECTED: {
           ...initialState,
-          error: true
-          data: payload
+          error: payload
         }
         FULFILLED: {
           ...initialState,
-          success: true
+          success: true,
           data: payload
         }
       }
     }, { initialState })
 
-  However now we can simplify this to:
+  A bit better right? But still *a lot* of repeated code... Imagine if you could simplify this to:
 
-    const reducer = typeToReducer({
-      [GET_RESOURCE]: asyncReducer()
-      [UPDATE_RESOURCE]: asyncReducer()
-    }, { initialState })
+    import { asyncReducer, asyncMethod } from 'freducer'
 
-  (Note that you still need to define `initialState`)
-## Arguments
+    const myReducer = asyncReducer({
+      [GET_RESOURCE]: asyncMethod()
+      [UPDATE_RESOURCE]: asyncMethod()
+    })
 
-### customInitialState
+  Well now you can (note that we also no longer have to define `initialState`)!
+
+## Default export
+
+### full reducer (freducer)
+
+Often, as in the previous example, one part of the store will be affected by multiple actions. However in the most simple situation a reducer will only have a single action, for example `UPSERT_RESOURCE`. At this level, we once again start repeating code, but not anymore...
+
+Using the `asyncReducer` & `asyncMethod` functions above, we might write something like this:
+
+    const myReducer = asyncReducer({
+      [UPSERT_RESOURCE]: asyncMethod()
+    })
+
+Using `freducer`'s default export, we can instead write:
+
+    const reducer = fullReducer(UPSERT_RESOURCE)
+
+<b>INCREDIBLE!</b>
+
+## Options
+
+### initialState
 If we only require a basic async reducer, we can leave both arguments blank
 as in the example above. However 2 options are available to customise the reducer.
-The most common will be `customInitialState` as we will quite often want to set a different default value for the `data` field. This is no problem - simply pass an object containing whatever fields you want to overwrite:
+The most common will be `initialState` as we will quite often want to set a different default value for the `data` field. This is no problem - simply pass an object containing whatever fields you want to overwrite:
 
-    typeToReducer({
-      [GET_RESOURCE]: asyncReducer({ data: [] })
-    }, { initialState })
+    const initialState = { data: [] }
 
-  Note you still have to pass a full `initialState` object as the second arg for
-`typeToReducer`. This will determine the `initialState` of the store when the app loads.
+    const reducer = asyncReducer({
+      [GET_RESOURCE]: asyncMethod({ initialState })
+    }, initialState)
 
-### customLocation
-Secondly we are able to tell our reducer to write to nested objects using the 
-`customLocation` argument. For example we may wish to do something like this:
+Note that whatever you object you pass here will be merged (using spread operator) with the default object. 
 
-    typeToReducer({
+### locationFunction
+Secondly we are able to tell our reducer to write to nested objects using a 
+`locationFunction` argument. For example we may wish to do something like this:
+
+    const myReducer = typeToReducer({
       [GET_RESOURCE_WITH_ID]: {
         PENDING: {
           ...state,
@@ -88,24 +149,23 @@ Secondly we are able to tell our reducer to write to nested objects using the
           ...state,
           [meta.id]: {
             ...initialState,
-            error: true
-            data: payload
+            error: payload
           }
         }
         FULFILLED: {
           ...state,
           [meta.id]: {
             ...initialState,
-            success: true
+            success: true,
             data: payload
           }
         }
       }
     }, { initialState })
 
-Instead we can simply do:
+Instead we can simply write:
 
-    const customLocation = (state, action, internal) => {
+    const locationFunction = (state, action, internal) => {
       return {
         ...state,
         [action.meta.id]: {
@@ -114,9 +174,9 @@ Instead we can simply do:
       }
     }
 
-    typeToReducer({
-      [GET_RESOURCE]: asyncReducer({}, customLocation)
-    }, { initialState })
+    const myReducer = asyncReducer({
+      [GET_RESOURCE]: asyncMethod({ locationFunction })
+    })
 
 The arguments `state` & `internal` are less confusing than they seem.
 `internal` refers to the object you are trying to place in the store i.e. with
@@ -124,26 +184,3 @@ The arguments `state` & `internal` are less confusing than they seem.
 `state` tree begins. So this function simply describes the steps to get from `state`
 i.e. the root of this reducers section of the store, to wherever you want to place the
 'internals'.
-
-## Non-default exports
-
-### full reducer (freducer)
-
-Often in more complex applications single sectors of the store (each governed by 1 reducer), will mutated by several actions eg. `GET_RESOURCE` & `DELETE_RESOURCE`. However in the most simple situation a reducer will only have a single action, for example `UPSERT_RESOURCE`. In this case, the object that we pass to `typeToReducer` becomes very simple (and repetitive) so we can simplify it even further.
-
-Using `asyncReducer` we might write something like this:
-
-    const reducer = typeToReducer({
-      [UPSERT_RESOURCE]: asyncReducer()
-    }, { initialState })
-
-However in this case we can simply write:
-
-    const reducer = fullReducer(UPSERT_RESOURCE)
-
-
-Note that we no longer have to define an `initialState` object - this will save you at least a whopping 5 lines of repeated code per reducer. And just in case you thought it couldn't get EVEN MORE convenient... we can still choose to pass a `customInitialState` as a 2nd argument:
-
-    const reducer = fullReducer(UPSERT_RESOURCE, { data: [] })
-
-<b>INCREDIBLE!</b>

@@ -1,12 +1,19 @@
 {
   "name": "freducer",
-  "version": "2.0.1-rc1",
+  "version": "3.0.0",
   "description": "Flexbile code for asyncronous reducer functions",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
+    "test": "jest --env=node",
+    "testwatch": "yarn test --watch",
+    "prebuild": "yarn test",
     "build": "tsc src/index.ts --outDir dist -d true",
     "prepublish": "yarn build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frednomoon/freducer.git"
   },
   "author": "Fred Shepherd - fmbshepherd@gmail.com",
   "license": "ISC",
@@ -14,6 +21,23 @@
     "type-to-reducer": "^1.1.0"
   },
   "devDependencies": {
+    "@types/jest": "^23.3.1",
+    "jest": "^23.4.1",
+    "ts-jest": "^23.0.1",
     "typescript": "^2.9.2"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
   }
 }
