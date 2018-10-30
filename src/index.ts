@@ -33,6 +33,8 @@ const defaultLocationFunction: LocationFunction = (state, action, internal) => {
   return internal
 }
 
+const defaultErrorParser = (payload: any) => payload
+
 interface MethodOptions {
   /**
    * Would you like to pass a different initial state object?
@@ -46,9 +48,9 @@ interface MethodOptions {
   locationFunction?: LocationFunction;
   /**
    * Would you like to add a parser for your error handling?
-   * @default error => error
+   * @default defaultErrorParser
    */
-  errorParser?: (error: any) => any
+  errorParser?: (payload: any) => any
 }
 
 /**
@@ -85,7 +87,7 @@ interface reducerMap {
 export function asyncMethod(options: MethodOptions | undefined = {}): reducerMap {
   const {
     locationFunction = defaultLocationFunction,
-    errorParser = error => error
+    errorParser = defaultErrorParser
   } = options
 
   return {
@@ -130,8 +132,12 @@ export const reducer = typeToReducer.default
  * Returns a fully implemented, 1-line reducer function
  */
 export default function (type: string, options: MethodOptions | undefined = {}): reducerMapFunction {
-  const { initialState = {}, locationFunction = defaultLocationFunction } = options
+  const {
+    initialState = {},
+    locationFunction = defaultLocationFunction,
+    errorParser = defaultErrorParser
+  } = options
   return reducer({
-    [type]: asyncMethod({ initialState, locationFunction })
+    [type]: asyncMethod({ initialState, locationFunction, errorParser })
   }, defaultInitialState(options))
 }

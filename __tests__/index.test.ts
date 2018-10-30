@@ -1,6 +1,6 @@
-import freducer, { asyncReducer, asyncMethod } from '../src'
+import freducer, { asyncReducer, asyncMethod, LocationFunction } from '../src'
 
-const GET_RESOURCE = 'GET_RESOURCE'
+const ACTION = 'ACTION'
 
 const testStores = {
   initialStore: {
@@ -40,9 +40,9 @@ const payload = {
 }
 
 // Run indentical tests on the following 2 reducers
-basicImplementation(freducer(GET_RESOURCE), 'freducer')
+basicImplementation(freducer(ACTION), 'freducer')
 basicImplementation(asyncReducer({
-  GET_RESOURCE: asyncMethod()
+  ACTION: asyncMethod()
 }, undefined), 'asyncReducer/asyncMethod')
 
 function basicImplementation(reducer, title) {
@@ -50,7 +50,7 @@ function basicImplementation(reducer, title) {
     Object.keys(testStores).forEach(key => {
       it(`_PENDING should set pending state - ${key}`, () => {
         const action = {
-          type: `${GET_RESOURCE}_PENDING`,
+          type: `${ACTION}_PENDING`,
           payload
         }
 
@@ -65,7 +65,7 @@ function basicImplementation(reducer, title) {
       })
       it(`_REJECTED should set error state - ${key}`, () => {
         const action = {
-          type: `${GET_RESOURCE}_REJECTED`,
+          type: `${ACTION}_REJECTED`,
           payload
         }
 
@@ -82,7 +82,7 @@ function basicImplementation(reducer, title) {
       })
       it(`_FULFILLED should set success state - ${key}`, () => {
         const action = {
-          type: `${GET_RESOURCE}_FULFILLED`,
+          type: `${ACTION}_FULFILLED`,
           payload
         }
 
@@ -101,3 +101,48 @@ function basicImplementation(reducer, title) {
   })
 }
 
+describe('locationFunction option', () => {
+  it('should use custom location function when passed', () => {
+    const locationFunction: LocationFunction = (state, { meta }, internal) => ({
+      ...state,
+      [meta.id]: {
+        ...internal
+      }
+    })
+
+    const reducer = freducer(ACTION, { locationFunction })
+
+    const action = {
+      type: `${ACTION}_FULFILLED`,
+      meta: { id: 123 },
+      payload: 456
+    }
+
+    const state = reducer({}, action)
+
+    expect(state[123].data).toBe(action.payload)
+    expect(state[123].success).toBe(true)
+    expect(state[123].error).toBe(null)
+    expect(state[123].pending).toBe(false)
+  })
+})
+
+describe('errorParser option', () => {
+  it('should use custom error parser when passed', () => {
+    const errorParser = ({ bar }) => ({
+      foo: bar
+    })
+    const reducer = freducer(ACTION, { errorParser })
+
+    const action = {
+      type: `${ACTION}_REJECTED`,
+      payload: {
+        bar: 'some error'
+      }
+    }
+
+    const state = reducer(testStores.store, action)
+
+    expect(state.error.foo).toBe(action.payload.bar)
+  })
+})
