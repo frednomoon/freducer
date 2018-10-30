@@ -44,6 +44,11 @@ interface MethodOptions {
    * @default defaultLocationFunction
    */
   locationFunction?: LocationFunction;
+  /**
+   * Would you like to add a parser for your error handling?
+   * @default error => error
+   */
+  errorParser?: (error: any) => any
 }
 
 /**
@@ -78,7 +83,11 @@ interface reducerMap {
  * of the asyncronous action. The result is contained within a reducerMap.
  */
 export function asyncMethod(options: MethodOptions | undefined = {}): reducerMap {
-  const { locationFunction = defaultLocationFunction } = options
+  const {
+    locationFunction = defaultLocationFunction,
+    errorParser = error => error
+  } = options
+
   return {
     PENDING: (state, action) => {
       return locationFunction(state, action, {
@@ -90,7 +99,7 @@ export function asyncMethod(options: MethodOptions | undefined = {}): reducerMap
       return locationFunction(state, action, {
         ...state,
         ...defaultInitialState(options),
-        error: action.payload
+        error: errorParser(action.payload)
       })
     },
     FULFILLED: (state, action) => {
