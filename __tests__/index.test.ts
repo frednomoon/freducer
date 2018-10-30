@@ -129,8 +129,8 @@ describe('locationFunction option', () => {
 
 describe('errorParser option', () => {
   it('should use custom error parser when passed', () => {
-    const errorParser = ({ bar }) => ({
-      foo: bar
+    const errorParser = action => ({
+      foo: action.payload.bar
     })
     const reducer = freducer(ACTION, { errorParser })
 

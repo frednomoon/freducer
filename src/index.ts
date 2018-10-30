@@ -33,7 +33,7 @@ const defaultLocationFunction: LocationFunction = (state, action, internal) => {
   return internal
 }
 
-const defaultErrorParser = (payload: any) => payload
+const defaultErrorParser = (action: FluxStandardAction) => action.payload
 
 interface MethodOptions {
   /**
@@ -101,7 +101,7 @@ export function asyncMethod(options: MethodOptions | undefined = {}): reducerMap
       return locationFunction(state, action, {
         ...state,
         ...defaultInitialState(options),
-        error: errorParser(action.payload)
+        error: errorParser(action)
       })
     },
     FULFILLED: (state, action) => {
