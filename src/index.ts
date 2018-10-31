@@ -14,7 +14,7 @@ type IState = {
   data?: any // data persists
 } | {
   // Pending state
-  success: true | false | null // success persisting from previous state
+  success: boolean | null // success persisting from previous state
   pending: true
   error: any // also persists
   data?: any // also persists

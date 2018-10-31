@@ -39,6 +39,8 @@ const payload = {
   data: 'yolovibey'
 }
 
+const error = new Error('error time')
+
 // Run indentical tests on the following 2 reducers
 basicImplementation(freducer(ACTION), 'freducer')
 basicImplementation(asyncReducer({
@@ -66,13 +68,13 @@ function basicImplementation(reducer, title) {
       it(`_REJECTED should set error state - ${key}`, () => {
         const action = {
           type: `${ACTION}_REJECTED`,
-          payload
+          payload: error
         }
 
         const state = reducer(testStores[key], action)
 
         // error should be set to true
-        expect(state.error).toBe(payload)
+        expect(state.error).toBe(error)
         // should set success to false
         expect(state.success).toBe(false)
         // pending should be false
