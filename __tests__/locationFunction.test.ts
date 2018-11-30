@@ -1,19 +1,10 @@
 import freducer from '../src'
+import { nestWithMetaId } from '../src/locationFunctions'
 
 const GET_RESOURCE = 'GET_RESOURCE'
 
 const payload = {
   data: 'yolovibey'
-}
-
-const locationFunction = (state, action, internal) => {
-  return {
-    ...state,
-    [action.meta.id]: {
-      ...state[action.meta.id],
-      ...internal
-    }
-  }
 }
 
 const testStores = {
@@ -39,7 +30,7 @@ const testStores = {
   }
 }
 
-const reducer = freducer(GET_RESOURCE, { locationFunction })
+const reducer = freducer(GET_RESOURCE, { locationFunction: nestWithMetaId })
 
 describe('location function reducer', () => {
   let state = {}
