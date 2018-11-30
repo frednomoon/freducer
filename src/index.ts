@@ -27,11 +27,12 @@ interface FluxStandardAction {
   error?: true
 }
 
-export type LocationFunction = (state: any, action: FluxStandardAction, internal: IState) => any
+export type LocationFunction = (state: any, action: FluxStandardAction, internal: any) => any
 
-const defaultLocationFunction: LocationFunction = (state, action, internal) => {
-  return internal
-}
+const defaultLocationFunction: LocationFunction = (state, action, internal) => ({
+  ...state,
+  ...internal
+})
 
 interface MethodOptions {
   /**
@@ -82,20 +83,17 @@ export function asyncMethod(options: MethodOptions | undefined = {}): reducerMap
   return {
     PENDING: (state, action) => {
       return locationFunction(state, action, {
-        ...state,
         pending: true
       })
     },
     REJECTED: (state, action) => {
       return locationFunction(state, action, {
-        ...state,
         ...defaultInitialState(options),
         error: action.payload
       })
     },
     FULFILLED: (state, action) => {
       return locationFunction(state, action, {
-        ...state,
         ...defaultInitialState(options),
         success: true,
         data: action.payload
