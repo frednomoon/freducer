@@ -1,6 +1,6 @@
 {
   "name": "freducer",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Flexbile code for asyncronous reducer functions",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
