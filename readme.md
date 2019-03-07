@@ -132,6 +132,20 @@ The most common will be `initialState` as we will quite often want to set a diff
 
 Note that whatever you object you pass here will be merged (using spread operator) with the default object. 
 
+### reset (added in 3.1.0)
+A very common pattern that started emerging in my projects was needing to "reset" a section of the store having finished with it. An good example of this could be a login / logout process, where you want an action to clear the data from the store. Previously my code looked like this:
+
+    const reducerWithReset = asyncReducer({
+      [LOGIN]: asyncMethod({ data: {} }),
+      [LOGOUT]: () => initialState
+    })
+
+Now, with `reset`, we can simply write:
+
+    const reducerWithReset = fullReducer(LOGIN, { reset: LOGOUT })
+
+Unbelievable!
+
 ### locationFunction
 Secondly we are able to tell our reducer to write to nested objects using a 
 `locationFunction` argument. For example we may wish to do something like this:
