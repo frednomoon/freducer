@@ -45,6 +45,12 @@ interface MethodOptions {
    * @default defaultLocationFunction
    */
   locationFunction?: LocationFunction;
+  /**
+   * Pass the `type` of action you want to be used for
+   * resetting this part of the store to its initial state.
+   * @default undefined
+   */
+  reset?: string | undefined;
 }
 
 /**
@@ -119,8 +125,9 @@ export const reducer = typeToReducer.default
  * Returns a fully implemented, 1-line reducer function
  */
 export default function (type: string, options: MethodOptions | undefined = {}): reducerMapFunction {
-  const { initialState = {}, locationFunction = defaultLocationFunction } = options
+  const { initialState = {}, locationFunction = defaultLocationFunction, reset } = options
   return reducer({
-    [type]: asyncMethod({ initialState, locationFunction })
+    [type]: asyncMethod({ initialState, locationFunction }),
+    ...reset && { [reset]: () => defaultInitialState(options) }
   }, defaultInitialState(options))
 }
