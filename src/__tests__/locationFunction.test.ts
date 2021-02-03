@@ -1,10 +1,10 @@
-import freducer from '../src'
-import { nestWithMetaId } from '../src/locationFunctions'
+import freducer from ".."
+import { nestWithMetaId } from "../locationFunctions"
 
-const GET_RESOURCE = 'GET_RESOURCE'
+const GET_RESOURCE = "GET_RESOURCE"
 
 const payload = {
-  data: 'yolovibey'
+  data: "yolovibey",
 }
 
 const testStores = {
@@ -13,87 +13,87 @@ const testStores = {
       success: true,
       pending: false,
       error: null,
-      data: 'some data'
+      data: "some data",
     },
     2: {
       success: true,
       pending: false,
       error: null,
-      data: 'some data'
+      data: "some data",
     },
     3: {
       success: true,
       pending: false,
       error: null,
-      data: 'some data'
-    }
-  }
+      data: "some data",
+    },
+  },
 }
 
 const reducer = freducer(GET_RESOURCE, { locationFunction: nestWithMetaId })
 
-describe('location function reducer', () => {
+describe("location function reducer", () => {
   let state = {}
-  it('should set separate pending states for different meta ids', () => {
-    const action = id => ({
+  it("should set separate pending states for different meta ids", () => {
+    const action = (id) => ({
       type: `${GET_RESOURCE}_PENDING`,
       meta: { id },
-      payload
+      payload,
     })
 
     const ids = [1, 2, 3, 4, 5]
-    ids.forEach(id => {
+    ids.forEach((id) => {
       state = reducer(state, action(id))
     })
 
-    ids.forEach(id => {
+    ids.forEach((id) => {
       expect(state[id]).toEqual({
-        pending: true
+        pending: true,
       })
     })
   })
-  it('should then set full success state', () => {
-    const action = id => ({
+  it("should then set full success state", () => {
+    const action = (id) => ({
       type: `${GET_RESOURCE}_FULFILLED`,
       meta: { id },
-      payload
+      payload,
     })
 
     const ids = [1, 2, 3, 4, 5]
-    ids.forEach(id => {
+    ids.forEach((id) => {
       state = reducer(state, action(id))
     })
 
-    ids.forEach(id => {
+    ids.forEach((id) => {
       expect(state[id]).toEqual({
         pending: false,
         success: true,
         error: null,
-        data: payload
+        data: payload,
       })
     })
   })
 })
 
-describe('location function against an already populated store', () => {
-  it('should not alter previous state on apart from pending', () => {
-    const action = id => ({
+describe("location function against an already populated store", () => {
+  it("should not alter previous state on apart from pending", () => {
+    const action = (id) => ({
       type: `${GET_RESOURCE}_PENDING`,
       meta: { id },
-      payload
+      payload,
     })
 
     const ids = [1, 2, 3]
     let state = { ...testStores.populatedStore }
 
-    ids.forEach(id => {
+    ids.forEach((id) => {
       state = reducer(state, action(id))
     })
 
-    ids.forEach(id => {
+    ids.forEach((id) => {
       expect(state[id]).toEqual({
         ...testStores.populatedStore[id],
-        pending: true
+        pending: true,
       })
     })
   })

@@ -1,57 +1,63 @@
-import freducer, { asyncReducer, asyncMethod } from '../src'
+import freducer, { asyncReducer, asyncMethod } from ".."
 
-const GET_RESOURCE = 'GET_RESOURCE'
+const GET_RESOURCE = "GET_RESOURCE"
 
 const testStores = {
   initialStore: {
     success: false,
     pending: false,
     error: null,
-    data: null
+    data: null,
   },
   store: {
     success: true,
     pending: false,
     error: null,
-    data: 'some data'
+    data: "some data",
   },
   errorStore: {
     success: true,
     pending: false,
-    error: 'you got an error boiii',
-    data: 'previous data'
+    error: "you got an error boiii",
+    data: "previous data",
   },
   pendingAfterErrorStore: {
     success: false,
     pending: true,
-    error: 'its an error pal',
-    data: 'still got data tho'
+    error: "its an error pal",
+    data: "still got data tho",
   },
   pendingAfterSuccessStore: {
     success: true,
     pending: true,
     error: null,
-    data: 'still got data tho'
-  }
+    data: "still got data tho",
+  },
 }
 
 const payload = {
-  data: 'yolovibey'
+  data: "yolovibey",
 }
 
 // Run indentical tests on the following 2 reducers
-basicImplementation(freducer(GET_RESOURCE), 'freducer')
-basicImplementation(asyncReducer({
-  GET_RESOURCE: asyncMethod()
-}, undefined), 'asyncReducer/asyncMethod')
+basicImplementation(freducer(GET_RESOURCE), "freducer")
+basicImplementation(
+  asyncReducer(
+    {
+      GET_RESOURCE: asyncMethod(),
+    },
+    undefined
+  ),
+  "asyncReducer/asyncMethod"
+)
 
 function basicImplementation(reducer, title) {
   describe(`basic implementation for ${title}`, () => {
-    Object.keys(testStores).forEach(key => {
+    Object.keys(testStores).forEach((key) => {
       it(`_PENDING should set pending state - ${key}`, () => {
         const action = {
           type: `${GET_RESOURCE}_PENDING`,
-          payload
+          payload,
         }
 
         const state = reducer(testStores[key], action)
@@ -66,7 +72,7 @@ function basicImplementation(reducer, title) {
       it(`_REJECTED should set error state - ${key}`, () => {
         const action = {
           type: `${GET_RESOURCE}_REJECTED`,
-          payload
+          payload,
         }
 
         const state = reducer(testStores[key], action)
@@ -83,7 +89,7 @@ function basicImplementation(reducer, title) {
       it(`_FULFILLED should set success state - ${key}`, () => {
         const action = {
           type: `${GET_RESOURCE}_FULFILLED`,
-          payload
+          payload,
         }
 
         const state = reducer(testStores[key], action)
@@ -100,4 +106,3 @@ function basicImplementation(reducer, title) {
     })
   })
 }
-
