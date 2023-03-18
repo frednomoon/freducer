@@ -3553,10 +3553,10 @@ type-to-reducer@^1.1.0:
   resolved "https://registry.yarnpkg.com/type-to-reducer/-/type-to-reducer-1.2.0.tgz#b01c4250b8197d3b7c5c1f61b53845819945649d"
   integrity sha512-BAC6aZxuoqhLyJSX+YWTZC4Znxe8cFU8hf83D89nqt3UJ5YSfBuNzfxHdqrvD/nUlEeJ2SqyZbtUJqfL/o8MNg==
 
-typescript@^4.0.0:
-  version "4.3.4"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.3.4.tgz#3f85b986945bcf31071decdd96cf8bfa65f9dcbc"
-  integrity sha512-uauPG7XZn9F/mo+7MrsRjyvbxFpzemRjKEZXS4AK83oP2KKOJPvb+9cO/gmnv8arWZvhnjVOXz7B49m1l0e9Ew==
+typescript@^5.0.0:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.0.2.tgz#891e1a90c5189d8506af64b9ef929fca99ba1ee5"
+  integrity sha512-wVORMBGO/FAs/++blGNeAVdbNKtIh1rbBL2EyQ1+J9lClJ93KiiKe8PmFIVdXhHcyv44SL9oglmfeSsndo0jRw==
 
 uglify-js@^3.1.4:
   version "3.13.10"
